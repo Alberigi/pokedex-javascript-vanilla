@@ -1,84 +1,51 @@
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-  background-color: #121214;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3em;
+  font-family: arial, sans-serif;
 
-  #app {
-    width: 400px;
-    padding: 1em;
-    background-color: #372447;
-    color: #81d8f7;
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-
-    #preview {
-      text-align: right;
-      min-height: 6em;
-
-      #previousValues,
-      #currentValues {
-        min-height: 1.6em;
-        padding: 0.2em;
-        overflow-wrap: break-word;
-      }
-      #previousValues {
-        color: #81d8f7;
-      }
-      
-      #currentValues {
-        font-size: 3em;
-        font-weight: 700;
-      }
+  header {
+    background-color: #3997da90;
+    height: 8rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    
+    h1{
+      margin-bottom: 1rem;
+      margin-top: initial;
+      font-size: 4rem;
     }
-
+    
+    select {
+      background-color: transparent;
+      padding: 4px;
+      width: auto;
+      border-radius: 5px;
+      text-align: center;
+      height: 2rem;
+    }
   }
-  #buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 3px;
+}
+
+
+#container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  #card {
+    border: none;
+    background-color: transparent;
+  
+    .card-body {
+      text-align: center;
+      justify-content: center;
+        background-color: #3997da90;
+      margin: 5px;
+      border: none;
+      border-radius: 15px;
+    }
   }
-}
-
-#buttons button {
-  border: 1px solid transparent;
-  border-radius: 5px;
-  height: 4em;
-  font-size: 1.2em;
-  background-color: #3a3a3a;
-  cursor: pointer;
-  color: #81d8f7;
-}
-
-#buttons .number {
-  background-color: #6e6e7a;
-  color: #81d8f7;
-}
-
-#buttons button:hover {
-  background-color: #372447;
-  border-color: #999;
-}
-
-#buttons .number:hover {
-  background-color: #3a3a3a;
-}
-
-#buttons #equal {
-  grid-column: span 2;
-  background-color: #6868ad;
-  color: #81d8f7;
-}
-
-#buttons #equal:hover {
-  background-color: #3a3a3a;
 }

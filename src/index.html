@@ -4,36 +4,31 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="style.scss" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Pokedex</title>
   </head>
-  <body>
-    <div id="app">
-      <div id="preview">
-        <div id="previousValues"></div>
-        <div id="currentValues"></div>
-      </div>
-      <div id="buttons">
-        <button>CE</button>
-        <button>C</button>
-        <button>DEL</button>
-        <button>/</button>
-        <button class="number">7</button>
-        <button class="number">8</button>
-        <button class="number">9</button>
-        <button>*</button>
-        <button class="number">4</button>
-        <button class="number">5</button>
-        <button class="number">6</button>
-        <button>+</button>
-        <button class="number">1</button>
-        <button class="number">2</button>
-        <button class="number">3</button>
-        <button>-</button>
-        <button class="number">0</button>
-        <button>.</button>
-        <button id="equal">=</button>
-      </div>
-    </div>
-    <script type="module" src="main.js"></script>
-  </body>
+    <body class="container">
+      <header>
+        <h1 class="text-white display-1">Pokedex</h1>
+        <label class="text-white">Filtrar por Tipo:</label>
+        <select class="form-select" id="filterType">
+          <option value="Todos">Todos</option>
+          <option value="Normal">Normal</option>
+          <option value="Fire">Fire</option>
+          <option value="Electric">Electric</option>
+          <option value="Grass">Grass</option>
+          <option value="Water">Water</option>
+        </select>
+      </header>
+      <div id="container"></div>
+      <template id="cardTemplate">
+        <div class="card" id="card" style="width: 18rem;">
+          <div class="card-body">
+            <img class="card-image" height="100px" src="{{image}}"></p>
+            <h3 class="text-white font-weight-bold" id="name">{{name}}</h3>
+            <p class="text-white" id="type">{{type}}</p>
+          </div>
+        </div>
+      </template>
+      <script type="module" src="./services/provider.js"></script>
+    </body>
 </html>
