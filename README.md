@@ -32,7 +32,7 @@ A list of pokemons in vanilla javascript simulating a pokedex, and test coverage
 
 ## Pending features
 
-- [x] tests
+- [ ] tests
 
 ---
 
