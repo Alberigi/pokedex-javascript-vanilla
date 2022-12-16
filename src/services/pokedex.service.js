@@ -1,49 +1,70 @@
-import { pokemonsData } from "../repository/data";
-
+// import { pokemonsData } from '../repository/data';
 export class PokedexService {
-  container = document.getElementById("container");
-  cardTemplate = document.getElementById("cardTemplate");
-  filterType = document.getElementById("filterType");
+  pokemonsData = [];
+  tbody = document.getElementById("t-body");
 
-  constructor() {
-    this.generateEvents();
-    this.listPokemon("Todos");
+  setCardsPokemons(pokemon) {
+    let tr = this.tbody.insertRow();
+
+    this.setNameTdValue(tr, pokemon.name);
+    this.setTypeTdValue(tr, pokemon.type);
+    this.setImageTdValue(tr, pokemon.image);
+    this.setButtonRemoveTdValue(tr, pokemon.name);
+  }
+  
+  addPokemon(pokemon) {
+    this.setCardsPokemons(pokemon);
+    this.pokemonsData.push(pokemon);
   }
 
-  generateEvents() {
-    filterType.addEventListener("change", () => {
-      this.listPokemon(filterType.value);
+  setNameTdValue(row, name) {
+    let td_name = row.insertCell();
+    td_name.innerText = name;
+  }
+
+  setTypeTdValue(row, type) {
+    let td_type = row.insertCell()
+    td_type.innerText = type;
+  }
+
+  setImageTdValue(row, image) {
+    let td_image = row.insertCell()
+    let img = document.createElement('img');
+    img.src = `${image}`;
+    img.style.height = '60px';
+    td_image.appendChild(img);  
+  }
+  
+  setButtonRemoveTdValue(row, name) {
+    let td_remove = row.insertCell();
+    let buttonRemove = document.createElement('button');
+    buttonRemove.className = 'btn btn-danger';
+    buttonRemove.id = `remove-${name}`;
+    buttonRemove.textContent = 'Remove';
+    buttonRemove.addEventListener('click', (e) => {
+      const name = e.target.id.split('remove-')[1];
+      this.removePokemon(name);
     });
+    td_remove.appendChild(buttonRemove);
+  }
+
+  removePokemon(name) {
+    const pokemon = this.pokemonsData.find(p => p.name === name);
+    const index = this.pokemonsData.indexOf(pokemon);
+    this.pokemonsData.splice(index,1)
+    this.cleanList();
+    this.listPokemon();
   }
 
   cleanList() {
-    while (container.hasChildNodes()) {
-      container.removeChild(container.firstChild);
+    while (this.tbody.hasChildNodes()) {
+      this.tbody.removeChild(this.tbody.lastChild);
     }
   }
 
-  validatePokemonType(typeToCheck, pokemonType) {
-    return typeToCheck === "Todos" || typeToCheck === pokemonType;
-  }
-
-  setCardsPokemons(type, pokemon) {
-    let card = this.cardTemplate.content
-      .cloneNode(true)
-      .getElementById("card").outerHTML;
-
-    if (this.validatePokemonType(type, pokemon.tipo)) {
-      card = card.replace(/{{name}}/g, pokemon.nome);
-      card = card.replace(/{{type}}/g, pokemon.tipo);
-      card = card.replace(/{{image}}/g, pokemon.imagem);
-      this.container.innerHTML += card;
-    }
-  }
-
-  listPokemon(type) {
-    this.cleanList();
-
-    pokemonsData.forEach((pokemon) => {
-      this.setCardsPokemons(type, pokemon);
+  listPokemon() {    
+    this.pokemonsData.forEach((pokemon) => {
+      this.setCardsPokemons(pokemon);
     });
   }
 }
