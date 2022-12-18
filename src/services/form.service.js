@@ -1,6 +1,9 @@
+import { types } from '../repository/types';
+
 export class FormService {
-  constructor(pokedexService) {
+  constructor(pokedexService, customToastService) {
     this.pokedexService = pokedexService;
+    this.customToastService = customToastService;
 
     const formButton = document.getElementById("formButton");
 
@@ -8,6 +11,7 @@ export class FormService {
       e.preventDefault();
       this.sendForm();
     });
+    this.setSelecttypesValues();
   }
 
   getFormData() {
@@ -24,6 +28,17 @@ export class FormService {
     document.getElementById("type-form").value = "";
   }
 
+  setSelecttypesValues() {
+    let select = document.getElementById("type-form");
+      
+    Object.keys(types).forEach(type => {
+      let opt = document.createElement("option");
+      opt.value = type;
+      opt.innerHTML = type;
+      select.appendChild(opt);
+    })
+  }
+
   validateData(data) {
     Object.keys(data).forEach((key) => {
       if (!data[key]) throw Error(`Field ${key} is empty`);
@@ -37,8 +52,9 @@ export class FormService {
       this.validateData(formData);
         this.pokedexService.addPokemon(formData);
         this.resetForm();
+        this.customToastService.success(`${formData.name} registered successfully`);
     } catch (error) {
-      console.error(error);
+      this.customToastService.error(error);
     }
   }
 }

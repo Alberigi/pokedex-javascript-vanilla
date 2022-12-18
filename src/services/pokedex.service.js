@@ -1,4 +1,4 @@
-// import { pokemonsData } from '../repository/data';
+import { types } from '../repository/types';
 export class PokedexService {
   pokemonsData = [];
   tbody = document.getElementById("t-body");
@@ -24,7 +24,10 @@ export class PokedexService {
 
   setTypeTdValue(row, type) {
     let td_type = row.insertCell()
-    td_type.innerText = type;
+    let span = document.createElement('span');
+    span.className = types[type];
+    span.innerText = type;
+    td_type.appendChild(span);  
   }
 
   setImageTdValue(row, image) {
