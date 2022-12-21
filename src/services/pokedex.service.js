@@ -3,6 +3,12 @@ export class PokedexService {
   pokemonsData = [];
   tbody = document.getElementById("t-body");
 
+  constructor(httpClientService) {
+    this.httpClientService = httpClientService;
+
+    this.listPokemon();
+  }
+
   setCardsPokemons(pokemon) {
     let tr = this.tbody.insertRow();
 
@@ -42,31 +48,26 @@ export class PokedexService {
     let td_remove = row.insertCell();
     let buttonRemove = document.createElement('button');
     buttonRemove.className = 'btn btn-danger';
-    buttonRemove.id = `remove-${name}`;
     buttonRemove.textContent = 'Remove';
-    buttonRemove.addEventListener('click', (e) => {
-      const name = e.target.id.split('remove-')[1];
-      this.removePokemon(name);
+    buttonRemove.addEventListener('click', async (e) => {
+      await this.removePokemon(name);
     });
     td_remove.appendChild(buttonRemove);
   }
 
-  removePokemon(name) {
-    const pokemon = this.pokemonsData.find(p => p.name === name);
-    const index = this.pokemonsData.indexOf(pokemon);
-    this.pokemonsData.splice(index,1)
+  async removePokemon(name) {
+    await this.httpClientService.post('/deletePokemon', {name});
     this.cleanList();
     this.listPokemon();
   }
 
   cleanList() {
-    while (this.tbody.hasChildNodes()) {
-      this.tbody.removeChild(this.tbody.lastChild);
-    }
+    this.tbody.innerHTML = "";
   }
 
-  listPokemon() {    
-    this.pokemonsData.forEach((pokemon) => {
+  async listPokemon() {   
+    const pokemons = await this.httpClientService.get('/getPokemons');
+    pokemons.forEach((pokemon) => {
       this.setCardsPokemons(pokemon);
     });
   }

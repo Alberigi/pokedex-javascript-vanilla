@@ -1,9 +1,10 @@
-import { types } from '../repository/types';
+// import { types } from '../repository/types';
 
 export class FormService {
-  constructor(pokedexService, customToastService) {
+  constructor(pokedexService, customToastService, httpClientService) {
     this.pokedexService = pokedexService;
     this.customToastService = customToastService;
+    this.httpClientService = httpClientService;
 
     const formButton = document.getElementById("formButton");
 
@@ -11,7 +12,8 @@ export class FormService {
       e.preventDefault();
       this.sendForm();
     });
-    this.setSelecttypesValues();
+
+    this.setSelectTypesValues();
   }
 
   getFormData() {
@@ -28,10 +30,12 @@ export class FormService {
     document.getElementById("type-form").value = "";
   }
 
-  setSelecttypesValues() {
+  async setSelectTypesValues() {
     let select = document.getElementById("type-form");
+
+    const types = await this.httpClientService.get('/getTypes');
       
-    Object.keys(types).forEach(type => {
+    types.forEach(type => {
       let opt = document.createElement("option");
       opt.value = type;
       opt.innerHTML = type;
@@ -39,20 +43,13 @@ export class FormService {
     })
   }
 
-  validateData(data) {
-    Object.keys(data).forEach((key) => {
-      if (!data[key]) throw Error(`Field ${key} is empty`);
-    });
-    if(this.pokedexService.pokemonsData.some(pokemon=> pokemon.name === data.name)) throw Error(`${data.name} already exists in pokedex`);
-  }
-
-  sendForm() {
+  async sendForm() {
     try {
       const formData = this.getFormData();
-      this.validateData(formData);
-        this.pokedexService.addPokemon(formData);
-        this.resetForm();
-        this.customToastService.success(`${formData.name} registered successfully`);
+      await this.httpClientService.post('/savePokemon', formData)
+      this.resetForm();
+      this.pokedexService.addPokemon(formData);
+      this.customToastService.success(`${formData.name} registered successfully`);
     } catch (error) {
       this.customToastService.error(error);
     }
