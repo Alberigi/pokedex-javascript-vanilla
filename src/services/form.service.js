@@ -1,5 +1,3 @@
-// import { types } from '../repository/types';
-
 export class FormService {
   constructor(pokedexService, customToastService, httpClientService) {
     this.pokedexService = pokedexService;

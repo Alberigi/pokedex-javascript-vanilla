@@ -10,6 +10,7 @@ const axiosClient = axios.create({
 });
 
 export const httpClientService = new HttpClientService(axiosClient);
-export const pokedexService = new PokedexService(httpClientService);
 export const customToastService = new CustomToastService();
+
+export const pokedexService = new PokedexService(httpClientService,customToastService);
 export const formService = new FormService(pokedexService,customToastService,httpClientService);
