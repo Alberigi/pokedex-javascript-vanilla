@@ -20,4 +20,14 @@ export class HttpClientService {
             throw Error(error.response.data.message);
         }
     }
+    
+    async getFetch(route, params) {
+        try {
+            const result = await fetch(route, params);
+            const data = await result.json();
+            return data;
+        } catch (error) {
+            throw Error(error.response.data.message);
+        }
+    }
 }

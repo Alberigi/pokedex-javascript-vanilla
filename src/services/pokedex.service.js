@@ -94,7 +94,11 @@ export class PokedexService {
     this.setEditInput(row, pokemon.name, 'name');
     await this.setEditSelect(row, pokemon.type, 'type');
     this.setEditInput(row, pokemon.image, 'image');
-    this.setSaveEditButton(row, pokemon);
+
+    let td = row.insertCell();
+    td.style.display = 'flex';
+    this.setSaveEditButton(td, pokemon);
+    this.setCloseEditButton(td);
   }
 
   setEditInput(row, value, key) {
@@ -128,14 +132,42 @@ export class PokedexService {
     })
   }
 
-  setSaveEditButton(row, pokemon) {
-    let td = row.insertCell();
+  setSaveEditButton(td, pokemon) {
     let buttonSaveEdit = document.createElement('button');
-    buttonSaveEdit.className = 'btn btn-primary';
-    buttonSaveEdit.textContent = 'Save';
+    let icon = document.createElement('i');
+    
+    icon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" fill="currentColor" color= "#07EE1E"  class="bi bi-check" viewBox="0 0 16 16">
+        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+      </svg>
+    `;
+    buttonSaveEdit.className = 'btn btn-link';
+
     buttonSaveEdit.addEventListener('click', async () => {
       await this.saveEdit(pokemon);
     });
+
+    buttonSaveEdit.appendChild(icon);
+    td.appendChild(buttonSaveEdit);
+  }
+
+  setCloseEditButton(td) {
+    let buttonSaveEdit = document.createElement('button');
+    let icon = document.createElement('i');
+    
+    icon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+      </svg>
+    `;
+    buttonSaveEdit.className = 'btn btn-link';
+
+    buttonSaveEdit.addEventListener('click', async () => {
+      this.cleanList();
+      await this.listPokemon();
+    });
+
+    buttonSaveEdit.appendChild(icon);
     td.appendChild(buttonSaveEdit);
   }
 
@@ -152,16 +184,22 @@ export class PokedexService {
       image: document.getElementById("edit-image").value,
     };
     try {
-      await this.httpClientService.post('/updatePokemon', {indetification,data});
+      await this.httpClientService.post('/updatePokemon', { indetification, data });
+      this.customToastService.success('successfully updated pokemon');
     } catch (error) {
       this.customToastService.error(error);
     }
   }
-
+  
   async removePokemon(name) {
-    await this.httpClientService.post('/deletePokemon', {name});
-    this.cleanList();
-    this.listPokemon();
+    try {
+      await this.httpClientService.post('/deletePokemon', {name});
+      this.cleanList();
+      await this.listPokemon();
+      this.customToastService.success(`${name} successfully removed`);
+    } catch (error) {
+      this.customToastService.error(error);
+    }
   }
 
   cleanList() {

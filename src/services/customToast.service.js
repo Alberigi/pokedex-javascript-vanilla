@@ -11,7 +11,6 @@ export class CustomToastService {
       position: "fixed",
        'z-index': 1,
       top: "-150px",
-      right: "15px",
       transition: "all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1)",
       "border-radius": "2px",
       cursor: "pointer",
@@ -24,7 +23,7 @@ export class CustomToastService {
       duration: 3000,
       style: {
         ...this.defaultStyle,
-        background: "linear-gradient(135deg, #73a5ff, #5477f5)",
+        background: "#07EE1E",
       },
     }).showToast();
   }
