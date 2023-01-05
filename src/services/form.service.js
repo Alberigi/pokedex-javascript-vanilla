@@ -1,6 +1,6 @@
 export class FormService {
-  constructor(pokedexService, customToastService, httpClientService) {
-    this.pokedexService = pokedexService;
+  constructor(createPokemonService, customToastService, httpClientService) {
+    this.createPokemonService = createPokemonService;
     this.customToastService = customToastService;
     this.httpClientService = httpClientService;
 
@@ -46,7 +46,7 @@ export class FormService {
       const formData = this.getFormData();
       await this.httpClientService.post('/savePokemon', formData)
       this.resetForm();
-      this.pokedexService.addPokemon(formData);
+      this.createPokemonService.create(formData);
       this.customToastService.success(`${formData.name} registered successfully`);
     } catch (error) {
       this.customToastService.error(error);

@@ -1,6 +1,5 @@
 import { types } from '../repository/types';
 export class PokedexService {
-  pokemonsData = [];
   UpdatePokemonService = {};
   DeletePokemonService = {};
   tbody = document.getElementById("t-body");
@@ -28,11 +27,6 @@ export class PokedexService {
     this.setTypeTdValue(tr, pokemon.type);
     this.setImageTdValue(tr, pokemon.image);
     this.setActionsButtons(tr, pokemon);
-  }
-  
-  addPokemon(pokemon) {
-    this.setCardsPokemons(pokemon);
-    this.pokemonsData.push(pokemon);
   }
 
   setNameTdValue(row, name) {
