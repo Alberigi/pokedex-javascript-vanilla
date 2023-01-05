@@ -96,12 +96,7 @@ export class UpdatePokemonService {
     async saveEdit(pokemon) {
         console.log(pokemon);
         await this.updatePokemon(pokemon.name);
-        await this.resetList();
-    }
-    
-    async resetList() {
-        this.listPokemonService.cleanList();
-        this.listPokemonService.listPokemon();
+        await this.listPokemonService.resetList();
     }
   
     async updatePokemon(indetification) {
@@ -127,7 +122,7 @@ export class UpdatePokemonService {
         `);
                 
         button.addEventListener('click', async () => {
-            await this.resetList();
+            await this.listPokemonService.resetList();
         });
 
         button.appendChild(icon);

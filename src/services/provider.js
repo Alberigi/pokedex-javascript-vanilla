@@ -4,6 +4,7 @@ import { FormService } from "./form.service";
 import { CustomToastService } from "./customToast.service";
 import { HttpClientService } from '../services/httpClient.service';
 import { UpdatePokemonService } from '../services/updatePokemon.service';
+import { DeletePokemonService } from '../services/deletePokemon.service';
 
 
 const axiosClient = axios.create({
@@ -15,7 +16,8 @@ export const customToastService = new CustomToastService();
 
 export const pokedexService = new PokedexService(httpClientService,customToastService);
 export const updatePokemonService = new UpdatePokemonService(httpClientService,customToastService, pokedexService);
+export const deletePokemonService = new DeletePokemonService(httpClientService,customToastService, pokedexService);
 export const formService = new FormService(pokedexService, customToastService, httpClientService);
 
-pokedexService.setService(updatePokemonService);
+pokedexService.setService([updatePokemonService,deletePokemonService]);
 pokedexService.init();
