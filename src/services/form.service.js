@@ -1,8 +1,9 @@
 export class FormService {
-  constructor(createPokemonService, customToastService, httpClientService) {
+  constructor(createPokemonService, customToastService, httpClientService, typesState) {
     this.createPokemonService = createPokemonService;
     this.customToastService = customToastService;
     this.httpClientService = httpClientService;
+    this.typesState = typesState;
 
     const formButton = document.getElementById("formButton");
 
@@ -31,7 +32,7 @@ export class FormService {
   async setSelectTypesValues() {
     let select = document.getElementById("type-form");
 
-    const types = await this.httpClientService.get('/getTypes');
+    const types = this.typesState.get();
       
     types.forEach(type => {
       let opt = document.createElement("option");

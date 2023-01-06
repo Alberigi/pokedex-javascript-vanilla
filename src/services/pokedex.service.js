@@ -4,9 +4,8 @@ export class PokedexService {
   DeletePokemonService = {};
   tbody = document.getElementById("t-body");
 
-  constructor(httpClientService,customToastService) {
-    this.httpClientService = httpClientService;
-    this.customToastService = customToastService;
+  constructor(pokemonState) {
+    this.pokemonState = pokemonState;
   }
   
   async init() {
@@ -16,7 +15,6 @@ export class PokedexService {
   setService(services) { 
     services.forEach(service => {
       this[service.constructor.name] = service;
-      console.log('service',this);
     });
   }
 
@@ -66,7 +64,8 @@ export class PokedexService {
   }
 
   async listPokemon() {   
-    const pokemons = await this.httpClientService.get('/getPokemons');
+    const pokemons = this.pokemonState.get();
+
     pokemons.forEach((pokemon) => {
       this.setCardsPokemons(pokemon);
     });
