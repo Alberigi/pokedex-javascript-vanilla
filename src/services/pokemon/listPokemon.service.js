@@ -1,5 +1,5 @@
-import { types } from '../repository/types';
-export class PokedexService {
+import { types } from '../../repository/types';
+export class ListPokemonService {
   UpdatePokemonService = {};
   DeletePokemonService = {};
   tbody = document.getElementById("t-body");

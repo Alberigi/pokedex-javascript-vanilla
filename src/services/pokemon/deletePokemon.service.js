@@ -1,8 +1,9 @@
 export class DeletePokemonService {
-    constructor(httpClientService, customToastService, listPokemonService) {
+    constructor(httpClientService, customToastService, listPokemonService, pokemonState) {
         this.httpClientService = httpClientService;
         this.listPokemonService = listPokemonService;
         this.customToastService = customToastService;
+        this.pokemonState = pokemonState;
     }
   
     createDeleteButton(td, name) {
@@ -35,7 +36,8 @@ export class DeletePokemonService {
   
   async delete(name) {
     try {
-      await this.httpClientService.post('/deletePokemon', {name});
+      await this.httpClientService.post('/deletePokemon', { name });
+      this.pokemonState.remove(name);
       await this.listPokemonService.resetList();
       this.customToastService.success(`${name} successfully removed`);
     } catch (error) {

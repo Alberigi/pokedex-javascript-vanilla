@@ -1,8 +1,10 @@
 export class UpdatePokemonService {
-    constructor(httpClientService, customToastService, listPokemonService) {
+    constructor(httpClientService, customToastService, listPokemonService, pokemonState, typesState) {
         this.httpClientService = httpClientService;
         this.listPokemonService = listPokemonService;
         this.customToastService = customToastService;
+        this.pokemonState = pokemonState;
+        this.typesState = typesState;
      }
     
     createEditButton(td, row, pokemon) {
@@ -60,14 +62,14 @@ export class UpdatePokemonService {
         let td = row.insertCell();
         let select = document.createElement('select');
         select.id = `edit-${key}`
-        await this.setOptions(select);
+        this.setOptions(select);
         select.value = value;
         select.className = 'form-select';
         td.appendChild(select);
     }
 
-    async setOptions(select) { 
-        const types = await this.httpClientService.get('/getTypes');
+    setOptions(select) { 
+        const types = this.typesState.get();
       
         types.forEach(type => {
             let opt = document.createElement("option");
@@ -94,7 +96,6 @@ export class UpdatePokemonService {
     }
 
     async saveEdit(pokemon) {
-        console.log(pokemon);
         await this.updatePokemon(pokemon.name);
         await this.listPokemonService.resetList();
     }
@@ -107,6 +108,7 @@ export class UpdatePokemonService {
         };
         try {
             await this.httpClientService.post('/updatePokemon', { indetification, data });
+            this.pokemonState.update(indetification, data);
             this.customToastService.success('successfully updated pokemon');
         } catch (error) {
             this.customToastService.error(error);
